@@ -7,11 +7,12 @@
     using System.Text.RegularExpressions;
 
     public class FontVariant {
-        public int weight;
+        private int weight;
+
         public FontStyleEnum Style { get; private set; }
         public int Weight { 
             get { return weight; }
-            private set {
+            internal set {
                 // can be either 1,2,3,4,5,6,7 or 100,200,300,400,500,600,700
                 string pattern = "^[1-9]{1}(00)?$";
                 if (!Regex.IsMatch(value.ToString(), pattern)) {
@@ -24,7 +25,6 @@
             }
         }
 
-
         public override string ToString() {
             string collapsed = string.Format("{0}{1}",
                 this.Style == FontStyleEnum.Normal?"n":"i",
@@ -33,7 +33,7 @@
             return collapsed;
         }
 
-        public FontVariant FromString(string fvdString) {
+        public static FontVariant FromString(string fvdString) {
             if (string.IsNullOrEmpty(fvdString)) { throw new ArgumentNullException("fvdString"); }
 
             // should look like n1,n2,...,n7 or i1,i2,...,i7
@@ -52,7 +52,7 @@
         /// Get's the font style from the fvd string.
         /// </summary>
         /// <param name="fvdString">Should look like n1,n2,...,n7 or i1,i2,...,i7 </param>
-        private FontStyleEnum GetFontStyleFromString(string fvdString) {
+        private static FontStyleEnum GetFontStyleFromString(string fvdString) {
             if (string.IsNullOrEmpty(fvdString)) { throw new ArgumentNullException("fvdString"); }
 
             FontStyleEnum result = FontStyleEnum.Normal;
@@ -75,7 +75,7 @@
         /// Get's the font weight from the fvd string
         /// </summary>
         /// <param name="fvdString">Should look like n1,n2,...,n7 or i1,i2,...,i7 </param>
-        private int GetFontWeightFromString(string fvdString) {
+        private static int GetFontWeightFromString(string fvdString) {
             if (string.IsNullOrEmpty(fvdString)) { throw new ArgumentNullException("fvdString"); }
             fvdString = fvdString.Trim();
 
