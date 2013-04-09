@@ -15,21 +15,23 @@
 
         public IFontInfo BuildFromHtmlTable(string htmlTable) {
             if (string.IsNullOrEmpty(htmlTable)) { throw new ArgumentNullException("htmlTable"); }
-            
+
             IFontInfo result = new FontInfo();
 
             try {
                 XDocument doc = XDocument.Parse(htmlTable);
-                // /table/thead/tr/th
-                result.Family = doc.XPathEvaluateElementValue(@"/table/thead/tr/td/code/text()") as string;
-                result.FamilyDisplayName = doc.XPathEvaluateElementValue(@"/table/thead/tr/th[1]/text()") as string;
-
-                var fvdNodes = doc.XPathSelectElements(@"/table/tbody/tr/td/code");
-                foreach (var fvdNode in fvdNodes) {
-                    result.AvailableFontVariations.Add(fvdNode.Value);
-                }
-
-                result.LicenseUri = doc.XPathEvaluateAttributeValue(@"/table/tbody/tr/td/a[@class='license-link']/@href") as string;
+                result = (from e in doc.Elements("table")
+                          select new FontInfo {
+                              FamilyDisplayName = e.Element("thead").Element("tr").Element("th").Value,
+                              Family = e.Element("thead").Element("tr").Element("td").Element("code").Value,
+                              AvailableFontVariations = (from fvd in e.Element("tbody").Elements("tr")
+                                                         select new FontVariant{
+                                                             VariantName = fvd.Element("th").Value,
+                                                             LicenseUri = fvd.Element("td").Elements("a").First().Attribute("href").Value,
+                                                             Weight = FontVariant.GetFontWeightFromString(fvd.Element("td").Element("code").Value),
+                                                             Style = FontVariant.GetFontStyleFromString(fvd.Element("td").Element("code").Value)
+                                                         }).ToList()
+                          }).Single();
             }
             catch (XmlException) {
                 result = null;

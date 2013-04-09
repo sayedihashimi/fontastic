@@ -9,7 +9,12 @@
     public class FontVariant {
         private int weight;
 
-        public FontStyleEnum Style { get; private set; }
+        /// <summary>
+        /// For example Regular,Thin,Extra Light, Italic, etc
+        /// </summary>
+        public string VariantName { get; set; }
+        public string LicenseUri { get; set; }
+        public FontStyleEnum Style { get; set; }
         public int Weight { 
             get { return weight; }
             internal set {
@@ -33,27 +38,22 @@
             return collapsed;
         }
 
-        public static FontVariant FromString(string fvdString) {
-            if (string.IsNullOrEmpty(fvdString)) { throw new ArgumentNullException("fvdString"); }
 
+        private static void ValidateFvdString(string fvdString){
             // should look like n1,n2,...,n7 or i1,i2,...,i7
             string pattern = "^(n[1-9]|i[1-9])$";
-            if (!Regex.IsMatch(fvdString, pattern)) {
+            if (string.IsNullOrWhiteSpace(fvdString) || !Regex.IsMatch(fvdString, pattern)) {
                 throw new InvalidValueException(
                     string.Format("The provided fvdString [{0}] is invalid.",fvdString));
             }
-
-            return new FontVariant {
-                Style = GetFontStyleFromString(fvdString),
-                Weight = GetFontWeightFromString(fvdString)
-            };
         }
+
         /// <summary>
         /// Get's the font style from the fvd string.
         /// </summary>
         /// <param name="fvdString">Should look like n1,n2,...,n7 or i1,i2,...,i7 </param>
-        private static FontStyleEnum GetFontStyleFromString(string fvdString) {
-            if (string.IsNullOrEmpty(fvdString)) { throw new ArgumentNullException("fvdString"); }
+        public static FontStyleEnum GetFontStyleFromString(string fvdString) {
+            ValidateFvdString(fvdString);
 
             FontStyleEnum result = FontStyleEnum.Normal;
             fvdString = fvdString.Trim();
@@ -75,8 +75,9 @@
         /// Get's the font weight from the fvd string
         /// </summary>
         /// <param name="fvdString">Should look like n1,n2,...,n7 or i1,i2,...,i7 </param>
-        private static int GetFontWeightFromString(string fvdString) {
-            if (string.IsNullOrEmpty(fvdString)) { throw new ArgumentNullException("fvdString"); }
+        public static int GetFontWeightFromString(string fvdString) {
+            ValidateFvdString(fvdString);
+
             fvdString = fvdString.Trim();
 
             int weight = 1;
@@ -86,7 +87,7 @@
                     throw new InvalidValueException(string.Format("The font weight provided [{0}] is invalid", weight));
                 }
             }
-            catch (Exception ex) {
+            catch (Exception) {
                 throw new InvalidValueException(
                     string.Format("The provided fvdString [{0}] does not have a valid font weight value.", fvdString));
             }

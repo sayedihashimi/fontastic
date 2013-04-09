@@ -59,7 +59,6 @@
                         Assert.Fail(string.Format("The invalid weight value provided [{0}] did not raise an exception as expected",valueToTry));
                     }
                 }
-
             }
         }
 
@@ -71,14 +70,12 @@
                 // test normal strings
                 for (int i = 1; i <= 7; i++) {
                     string normalFvdStr = string.Format("n{0}", i);
-                    var normalFv = FontVariant.FromString(normalFvdStr);
-                    Assert.AreEqual(FontStyleEnum.Normal, normalFv.Style);
-                    Assert.AreEqual(i, normalFv.Weight);
+                    Assert.AreEqual(FontStyleEnum.Normal, FontVariant.GetFontStyleFromString(normalFvdStr));
+                    Assert.AreEqual(i, FontVariant.GetFontWeightFromString(normalFvdStr));
 
                     string italicFvdStr = string.Format("i{0}", i);
-                    var italicFv = FontVariant.FromString(italicFvdStr);
-                    Assert.AreEqual(FontStyleEnum.Italic, italicFv.Style);
-                    Assert.AreEqual(i, italicFv.Weight);
+                    Assert.AreEqual(FontStyleEnum.Italic, FontVariant.GetFontStyleFromString(italicFvdStr));
+                    Assert.AreEqual(i, FontVariant.GetFontWeightFromString(italicFvdStr));
                 }
             }
             
@@ -87,22 +84,42 @@
         [TestClass]
         public class TestToStringMethod {
             [TestMethod]
-            public void TestNormalSingleDigit() {
-                List<string> variantsToTest = new List<string>();
+            public void TestNormalSingleDigit() {                
+                Dictionary<FontVariant, string> valueMap = new Dictionary<FontVariant, string>();
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 1 }, "n1");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 2 }, "n2");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 3 }, "n3");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 4 }, "n4");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 5 }, "n5");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 6 }, "n6");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 7 }, "n7");
 
-                // add all normal variants
-                for (int i = 1; i < 7; i++) {
-                    variantsToTest.Add(string.Format("n{0}", i));
-                }
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 100 }, "n1");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 200 }, "n2");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 300 }, "n3");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 400 }, "n4");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 500 }, "n5");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 600 }, "n6");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Normal, Weight = 700 }, "n7");
 
-                // add all italic variants
-                for (int i = 1; i < 7; i++) {                    
-                    variantsToTest.Add(string.Format("i{0}", i));
-                }
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 1 }, "i1");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 2 }, "i2");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 3 }, "i3");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 4 }, "i4");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 5 }, "i5");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 6 }, "i6");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 7 }, "i7");
 
-                foreach (string varToTest in variantsToTest) {
-                    var fv = FontVariant.FromString(varToTest);
-                    Assert.AreEqual(varToTest, varToTest.ToString());
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 100 }, "i1");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 200 }, "i2");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 300 }, "i3");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 400 }, "i4");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 500 }, "i5");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 600 }, "i6");
+                valueMap.Add(new FontVariant { Style = FontStyleEnum.Italic, Weight = 700 }, "i7");
+
+                foreach (FontVariant variant in valueMap.Keys) {
+                    Assert.AreEqual(valueMap[variant], variant.ToString());
                 }
             }
         }
