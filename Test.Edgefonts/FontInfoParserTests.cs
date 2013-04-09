@@ -29,7 +29,8 @@
       </td>
     </tr>
   </tbody>
-</table>";
+</table>
+";
 
                 var result = new FontInfoParser().BuildFromHtmlTable(htmlString);
                 Assert.IsNotNull(result);
@@ -141,6 +142,89 @@
                 Assert.AreEqual("n7", result.AvailableFontVariations[6].ToString());
                 Assert.AreEqual(@"http://typekit.com/eulas/0000000000000000000121b7", result.AvailableFontVariations[6].LicenseUri);
             }            
+        }
+
+        [TestClass]
+        public class GenerateFromHtmlTablesTests {
+            [TestMethod]
+            public void TestWithTwoFonts() {
+                #region strings
+                var htmlString = @"
+<root>
+<table>
+  <thead>
+    <tr>
+      <th>Abel</th>
+      <td><code>abel</code></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Regular</th>
+      <td>
+        <code>n4</code>
+        <a href=""http://typekit.com/eulas/0000000000000000000121cc"" class=""license-link"" target=""_blank"">font license</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Abril Fatface</th>
+      <td><code>abril-fatface</code></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Regular</th>
+      <td>
+        <code>n4</code>
+        <a href=""http://typekit.com/eulas/0000000000000000000119b2"" class=""license-link"" target=""_blank"">font license</a>
+      </td>
+    </tr>
+    <tr>
+      <th>Italic</th>
+      <td>
+        <code>i4</code>
+        <a href=""http://typekit.com/eulas/0000000000000000000119b3"" class=""license-link"" target=""_blank"">font license</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</root>
+";
+                #endregion
+
+                IList<IFontInfo> resultList = new FontInfoParser().GenerateFromHtmlTables(htmlString);
+
+                Assert.AreEqual(2, resultList.Count);
+
+                Assert.AreEqual("Abel", resultList[0].FamilyDisplayName);
+                Assert.AreEqual("abel", resultList[0].Family);
+
+                Assert.AreEqual(1, resultList[0].AvailableFontVariations.Count);                
+                Assert.AreEqual("Regular", resultList[0].AvailableFontVariations[0].VariantName);
+                Assert.AreEqual(FontStyleEnum.Normal, resultList[0].AvailableFontVariations[0].Style);
+                Assert.AreEqual(4, resultList[0].AvailableFontVariations[0].Weight);
+                Assert.AreEqual(@"http://typekit.com/eulas/0000000000000000000121cc", resultList[0].AvailableFontVariations[0].LicenseUri);
+
+                Assert.AreEqual("Abril Fatface", resultList[1].FamilyDisplayName);
+                Assert.AreEqual("abril-fatface", resultList[1].Family);
+
+                Assert.AreEqual(2, resultList[1].AvailableFontVariations.Count());
+                
+                Assert.AreEqual("Regular", resultList[1].AvailableFontVariations[0].VariantName);
+                Assert.AreEqual(FontStyleEnum.Normal, resultList[1].AvailableFontVariations[0].Style);
+                Assert.AreEqual(@"http://typekit.com/eulas/0000000000000000000119b2", resultList[1].AvailableFontVariations[0].LicenseUri);
+
+                Assert.AreEqual("Italic", resultList[1].AvailableFontVariations[1].VariantName);
+                Assert.AreEqual(FontStyleEnum.Italic, resultList[1].AvailableFontVariations[1].Style);
+                Assert.AreEqual(@"http://typekit.com/eulas/0000000000000000000119b3", resultList[1].AvailableFontVariations[1].LicenseUri);
+
+            }
+            
         }
     }
 }
