@@ -7,6 +7,7 @@
     using System.Xml.Linq;
     using System.Xml.XPath;
     using Edgefonts.Extensions;
+    using System.IO;
 
     public class FontInfoParser {
         public IList<IFontInfo> GenerateFromHtmlTables(string html) {
@@ -15,6 +16,12 @@
                                              select this.BuildFromHtmlTable(e)).ToList();
 
             return fontInfoList;
+        }
+
+        public IList<IFontInfo> GenerateFromHtmlFile(string filePath) {
+            // these files are only ~250k
+            string html = File.ReadAllText(filePath);
+            return GenerateFromHtmlTables(html);
         }
 
         public IFontInfo BuildFromHtmlTable(string htmlTable) {

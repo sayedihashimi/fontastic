@@ -42,7 +42,6 @@
     <Compile Include="Exceptions\InvalidValueException.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="FontVariant.cs" />
-    <Compile Include="FontVariationEnum.cs" />
     <Compile Include="FontInfo.cs" />
     <Compile Include="FontInfoParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -18,15 +18,15 @@
         public int Weight { 
             get { return weight; }
             internal set {
-                // can be either 1,2,3,4,5,6,7 or 100,200,300,400,500,600,700
+                // can be either 1,2,3,4,5,6,7,8,9 or 100,200,300,400,500,600,700,800,900
                 string pattern = "^[1-9]{1}(00)?$";
                 if (!Regex.IsMatch(value.ToString(), pattern)) {
                     throw new InvalidValueException(
                         string.Format("The weight value provided [{0}] is invalid", value));
                 }
 
-                // this weight value will always be one of 1,2,3,4,5,6,7
-                this.weight = value <= 7 ? value : value / 100;
+                // this weight value will always be one of 1,2,3,4,5,6,7,8,9
+                this.weight = (value <= 9 ? value : value / 100);
             }
         }
 
@@ -51,14 +51,14 @@
         /// <summary>
         /// Get's the font style from the fvd string.
         /// </summary>
-        /// <param name="fvdString">Should look like n1,n2,...,n7 or i1,i2,...,i7 </param>
+        /// <param name="fvdString">Should look like n1,n2,...,n9 or i1,i2,...,i9 </param>
         public static FontStyleEnum GetFontStyleFromString(string fvdString) {
             ValidateFvdString(fvdString);
 
             FontStyleEnum result = FontStyleEnum.Normal;
             fvdString = fvdString.Trim();
 
-            if (fvdString.StartsWith("n", StringComparison.OrdinalIgnoreCase)) {
+            if (fvdString.StartsWith("n", System.StringComparison.OrdinalIgnoreCase)) {
                 result = FontStyleEnum.Normal;
             }
             else if (fvdString.StartsWith("i", StringComparison.OrdinalIgnoreCase)) {
@@ -74,7 +74,7 @@
         /// <summary>
         /// Get's the font weight from the fvd string
         /// </summary>
-        /// <param name="fvdString">Should look like n1,n2,...,n7 or i1,i2,...,i7 </param>
+        /// <param name="fvdString">Should look like n1,n2,...,n0 or i1,i2,...,i9 </param>
         public static int GetFontWeightFromString(string fvdString) {
             ValidateFvdString(fvdString);
 
@@ -83,7 +83,7 @@
             int weight = 1;
             try {
                 weight = int.Parse(fvdString.Substring(1, 1));
-                if ( weight < 1 || weight > 7) {
+                if ( weight < 1 || weight > 9) {
                     throw new InvalidValueException(string.Format("The font weight provided [{0}] is invalid", weight));
                 }
             }
