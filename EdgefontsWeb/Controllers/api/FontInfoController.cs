@@ -8,11 +8,18 @@
     using System.Web.Http;
 
     public class FontInfoController : BaseFontController {
-        public HttpResponseMessage Get() {
-            // this will return all the fonts
-            IList<IFontInfo>allFonts = this.NewFontManager().GetFonts();
+        /// <summary>
+        /// Since this is IQueryable you can make OData calls to it.
+        /// To get the top 10 results: /api/FontInfo?$top=10
+        /// To get the abel font:      /api/FontInfo?$filter=Family%20eq%20'abel'
+        /// </summary>
+        /// <returns></returns>
+        [Queryable(PageSize = 10)]
+        public IQueryable<IFontInfo> Get() {
+            var result = from f in this.NewFontManager().GetFonts()
+                         select f;
 
-            return Request.CreateResponse<IList<IFontInfo>>(HttpStatusCode.OK, allFonts);
+            return result.AsQueryable();
         }
     }
 }

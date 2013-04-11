@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Web;
+    using System.Linq;
 
     public class FontManager {
         private const string FontCacheKey = "fontManagerFontList";
@@ -29,7 +30,14 @@
                 this.Context.Cache[FontManager.FontCacheKey] = fonts;
             }
 
-            return fonts;
+            return fonts;        
+        }
+
+        public IList<FontSummary> GetFontNames() {
+            var result = (from f in this.GetFonts()
+                          select new FontSummary { Family = f.Family, FamilyDisplayName = f.FamilyDisplayName }).ToList();
+
+            return result;
         }
 
         public string FontsFilePath {
