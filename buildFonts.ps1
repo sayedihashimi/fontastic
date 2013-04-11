@@ -4,20 +4,32 @@
     Split-Path $Invocation.MyCommand.Path
 }
 
+function Write-InfoMessage
+{
+    param([string]$message)
+    if($message){
+        $message | Write-Host -ForegroundColor Cyan
+    }
+}
+
 $downloadFile = $false
 $fontsUrl = 'http://www.edgefonts.com/#list-of-available-fonts'
 
 $scriptDir = Get-ScriptDirectory
+$edgeFontsAssemblyPath = Join-Path $scriptDir 'BuildOutput\Edgefonts.dll'
+$jsonNetAssemblyPath = Join-Path $scriptDir 'Lib\Newtonsoft.Json.dll'
 $htmlResultPath = Join-Path $scriptDir 'BuildOutput\fonts.html'
 $xmlResultPath = Join-Path $scriptDir 'BuildOutput\fonts.xml'
+$jsonResultPath = Join-Path $scriptDir 'BuildOutput\fonts.js'
 
 
 if($downloadFile -and (Test-Path $htmlResultPath)){
-#    Remove-Item $htmlResultPath
+    Remove-Item $htmlResultPath
 }
 
 $webClient = New-Object System.Net.WebClient
 if($downloadFile){
+
     $webClient.DownloadFile($fontsUrl,$htmlResultPath)
 }
 
@@ -58,7 +70,7 @@ if( ($startTableLine -le 0) -or
     }
 
 
-"Creating XML file" | Write-Host -ForegroundColor Cyan
+"Creating XML file" | Write-InfoMessage
 $lines = @()
 $lines += '<fonts>'
 for($i = $startTableLine; $i -le $endTableLine; $i++){
@@ -69,17 +81,30 @@ $lines += '</fonts>'
 Set-Content -Path $xmlResultPath -Value $lines
 
 
-$assemblyPath = Join-Path $scriptDir 'BuildOutput\Edgefonts.dll'
-[System.Reflection.Assembly]::LoadFile($assemblyPath)
+
+[System.Reflection.Assembly]::LoadFile($edgeFontsAssemblyPath)
 
 $parser = New-Object EdgeFonts.FontInfoParser
 $fontInfoList = $parser.GenerateFromHtmlFile($xmlResultPath)
 
 "Number of fonts found: [{0}]" -f $fontInfoList.Length
 
+# TODO: remove this later
 foreach($font in $fontInfoList){
     "{0} | {1} | {2}" -f $font.FamilyDisplayName, $font.Family,$font.AvailableFontVariations.length | Write-Host -ForegroundColor DarkCyan
 }
 
-"Script directory {0}" -f $scriptDir | Write-Host -ForegroundColor DarkCyan
-"Assembly path {0}" -f $assemblyPath | Write-Host -ForegroundColor DarkCyan
+"Serializing to json" | Write-InfoMessage
+# searlize it to Json and write the file out
+[System.Reflection.Assembly]::LoadFile($jsonNetAssemblyPath)
+$fontsJson = [Newtonsoft.Json.JsonConvert]::SerializeObject($fontInfoList)
+if($fontsJson -eq $null -or $fontsJson.Length -le 0){
+    "The font did not serialize to Json correctly. It is null or empty" | Write-Error
+    exit 1
+}
+
+"Writing json out to file [{0}]" -f $jsonResultPath  | Write-InfoMessage
+Set-Content -Value $fontsJson -Path $jsonResultPath
+
+"Script directory {0}" -f $scriptDir  | Write-InfoMessage
+"Assembly path {0}" -f $edgeFontsAssemblyPath  | Write-InfoMessage
