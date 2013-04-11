@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\InvalidValueException.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="FontSummary.cs" />
     <Compile Include="FontVariant.cs" />
     <Compile Include="FontInfo.cs" />
     <Compile Include="FontInfoParser.cs" />

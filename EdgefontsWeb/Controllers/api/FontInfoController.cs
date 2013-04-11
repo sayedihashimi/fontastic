@@ -6,8 +6,10 @@
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using System.Web.Http.OData;
+    using System.Web.Http.OData.Query;
 
-    public class FontInfoController : BaseFontController {
+    public class FontInfoController : EntitySetController<FontInfo, string> {
         /// <summary>
         /// Since this is IQueryable you can make OData calls to it.
         /// To get all the fonts (1 page at a time):    /o/FontInfo
@@ -15,9 +17,9 @@
         /// To get the abel font:                       /o/FontInfo?$filter=Family%20eq%20'abel'
         /// To get a particular font:                   /o/FontInfo(abel)
         /// </summary>
-        /// <returns></returns>
-        [Queryable(PageSize = 10)]
+        [Queryable(PageSize = 10,AllowedQueryOptions=AllowedQueryOptions.All)]
         public override IQueryable<FontInfo> Get() {
+            // TODO: Limit query options later
             var result = from f in this.NewFontManager().GetFonts()
                          select f;
 
