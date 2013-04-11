@@ -20,9 +20,9 @@
             this.FontParser = fontParser;
         }
 
-        public IList<IFontInfo> GetFonts() {
+        public IList<FontInfo> GetFonts() {
             // see if the font is in the cache or not, if not add it
-            IList<IFontInfo> fonts = this.Context.Cache[FontManager.FontCacheKey] as IList<IFontInfo>;
+            IList<FontInfo> fonts = this.Context.Cache[FontManager.FontCacheKey] as IList<FontInfo>;
 
             if (fonts == null) {
                 fonts = ReadFontsFromFile();
@@ -32,14 +32,7 @@
 
             return fonts;        
         }
-
-        public IList<FontSummary> GetFontNames() {
-            var result = (from f in this.GetFonts()
-                          select new FontSummary { Family = f.Family, FamilyDisplayName = f.FamilyDisplayName }).ToList();
-
-            return result;
-        }
-
+        
         public string FontsFilePath {
             get {
                 if (fontsFilePath == null) {
@@ -56,7 +49,7 @@
         /// This method will read the json file at <code>App_Data\fonts.js</code> and return the font list.
         /// Since this uses IO we should avoid doing this unless needed
         /// </summary>
-        private IList<IFontInfo> ReadFontsFromFile() {                        
+        private IList<FontInfo> ReadFontsFromFile() {                        
             string localFilePath = this.Context.Server.MapPath(this.FontsFilePath);
 
             if (!File.Exists(localFilePath)) {

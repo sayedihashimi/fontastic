@@ -10,53 +10,53 @@
     using System.IO;
 
     public interface IFontInfoParser {
-        IFontInfo BuildFromHtmlTable(string htmlTable);
-        IFontInfo BuildFromHtmlTable(System.Xml.Linq.XElement element);
-        System.Collections.Generic.IList<IFontInfo> GenerateFromHtmlFile(string filePath);
-        System.Collections.Generic.IList<IFontInfo> GenerateFromHtmlTables(string html);
-        System.Collections.Generic.IList<IFontInfo> ReadFontsFromJson(string json);
-        System.Collections.Generic.IList<IFontInfo> ReadFontsFromJsonFile(string filePath);
+        FontInfo BuildFromHtmlTable(string htmlTable);
+        FontInfo BuildFromHtmlTable(System.Xml.Linq.XElement element);
+        System.Collections.Generic.IList<FontInfo> GenerateFromHtmlFile(string filePath);
+        System.Collections.Generic.IList<FontInfo> GenerateFromHtmlTables(string html);
+        System.Collections.Generic.IList<FontInfo> ReadFontsFromJson(string json);
+        System.Collections.Generic.IList<FontInfo> ReadFontsFromJsonFile(string filePath);
     }
 
     public class FontInfoParser : Edgefonts.IFontInfoParser {
-        public IList<IFontInfo> GenerateFromHtmlTables(string html) {
+        public IList<FontInfo> GenerateFromHtmlTables(string html) {
             XDocument doc = XDocument.Parse(html);
-            IList<IFontInfo> fontInfoList = (from e in doc.Descendants("table")
+            IList<FontInfo> fontInfoList = (from e in doc.Descendants("table")
                                              select this.BuildFromHtmlTable(e)).ToList();
 
             return fontInfoList;
         }
 
-        public IList<IFontInfo> GenerateFromHtmlFile(string filePath) {
+        public IList<FontInfo> GenerateFromHtmlFile(string filePath) {
             // these files are only ~250k
             string html = File.ReadAllText(filePath);
             return GenerateFromHtmlTables(html);
         }
 
-        public IList<IFontInfo> ReadFontsFromJsonFile(string filePath) {
+        public IList<FontInfo> ReadFontsFromJsonFile(string filePath) {
             if (string.IsNullOrEmpty(filePath)) { throw new ArgumentNullException("filePath"); }
 
             string jsonContent = File.ReadAllText(filePath);
             return ReadFontsFromJson(jsonContent);
         }
 
-        public IList<IFontInfo> ReadFontsFromJson(string json) {
+        public IList<FontInfo> ReadFontsFromJson(string json) {
             if (string.IsNullOrEmpty(json)) { throw new ArgumentNullException("json"); }
 
-            IList<IFontInfo> fontList = null;
+            IList<FontInfo> fontList = null;
             var result = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<FontInfo>>(json);
 
             if (result != null) {
-                fontList = result.Cast<IFontInfo>().ToList();
+                fontList = result.Cast<FontInfo>().ToList();
             }
 
             return fontList;
         }
 
-        public IFontInfo BuildFromHtmlTable(string htmlTable) {
+        public FontInfo BuildFromHtmlTable(string htmlTable) {
             if (string.IsNullOrEmpty(htmlTable)) { throw new ArgumentNullException("htmlTable"); }
 
-            IFontInfo result = null;
+            FontInfo result = null;
 
             try {
                 XDocument doc = XDocument.Parse(htmlTable);
@@ -69,10 +69,10 @@
             return result;
         }
 
-        public IFontInfo BuildFromHtmlTable(XElement element) {
+        public FontInfo BuildFromHtmlTable(XElement element) {
             if (element == null) { throw new ArgumentNullException("element"); }
 
-            IFontInfo result = null;
+            FontInfo result = null;
             
             try {
                 result = new FontInfo {
@@ -93,5 +93,6 @@
 
             return result;
         }
+
     }
 }

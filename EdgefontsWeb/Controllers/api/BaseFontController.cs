@@ -8,8 +8,9 @@
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.OData;
 
-    public abstract class BaseFontController : ApiController
+    public abstract class BaseFontController : ODataController
     {
         protected virtual FontManager NewFontManager() {
             // TODO: Could pass this in via IOC            

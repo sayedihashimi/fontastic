@@ -12,10 +12,11 @@
         /// Since this is IQueryable you can make OData calls to it.
         /// To get the top 10 results: /api/FontInfo?$top=10
         /// To get the abel font:      /api/FontInfo?$filter=Family%20eq%20'abel'
+        /// To get the OData result with next link: /odata/FontInfo
         /// </summary>
         /// <returns></returns>
         [Queryable(PageSize = 10)]
-        public IQueryable<IFontInfo> Get() {
+        public IQueryable<FontInfo> Get() {
             var result = from f in this.NewFontManager().GetFonts()
                          select f;
 

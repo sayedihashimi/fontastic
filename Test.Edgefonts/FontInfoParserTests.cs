@@ -197,7 +197,7 @@
 ";
                 #endregion
 
-                IList<IFontInfo> resultList = new FontInfoParser().GenerateFromHtmlTables(htmlString);
+                IList<FontInfo> resultList = new FontInfoParser().GenerateFromHtmlTables(htmlString);
 
                 Assert.AreEqual(2, resultList.Count);
 
@@ -268,7 +268,7 @@
 ]";
                 #endregion
 
-                IList<IFontInfo> fontList = new FontInfoParser().ReadFontsFromJson(json);
+                IList<FontInfo> fontList = new FontInfoParser().ReadFontsFromJson(json);
 
                 Assert.IsNotNull(fontList);
                 Assert.AreEqual(2, fontList.Count);
