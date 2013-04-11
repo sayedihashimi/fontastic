@@ -11,6 +11,7 @@ function Write-InfoMessage
 }
 
 $downloadFile = $true
+$indentJson = $true
 $fontsUrl = 'http://www.edgefonts.com/#list-of-available-fonts'
 
 $scriptDir = Get-ScriptDirectory
@@ -88,7 +89,10 @@ $fontInfoList = $parser.GenerateFromHtmlFile($xmlResultPath)
 "Number of fonts found: [{0}]" -f $fontInfoList.Length
 
 # TODO: remove this later
+$fontId=0
 foreach($font in $fontInfoList){
+    # update the ID values for each font
+    $font.Id = $fontId++
     "{0} | {1} | {2}" -f $font.FamilyDisplayName, $font.Family,$font.AvailableFontVariations.length | Write-Host -ForegroundColor DarkCyan
 }
 
@@ -96,7 +100,11 @@ foreach($font in $fontInfoList){
 # Serialize it to Json and write the file out
 
 [System.Reflection.Assembly]::LoadFile($jsonNetAssemblyPath) | Out-Null
-$fontsJson = [Newtonsoft.Json.JsonConvert]::SerializeObject($fontInfoList)
+$indentOption=[Newtonsoft.Json.Formatting]::Indented
+if(!$indentJson){
+    $indentOption=[Newtonsoft.Json.Formatting]::None
+}
+$fontsJson = [Newtonsoft.Json.JsonConvert]::SerializeObject($fontInfoList,$indentOption)
 
 if($fontsJson -eq $null -or $fontsJson.Length -le 0){
     "The font did not serialize to Json correctly. It is null or empty" | Write-Error

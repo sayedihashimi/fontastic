@@ -21,6 +21,7 @@
     public class FontInfoParser : Edgefonts.IFontInfoParser {
         public IList<FontInfo> GenerateFromHtmlTables(string html) {
             XDocument doc = XDocument.Parse(html);
+            long id=0;
             IList<FontInfo> fontInfoList = (from e in doc.Descendants("table")
                                              select this.BuildFromHtmlTable(e)).ToList();
 
@@ -49,7 +50,6 @@
             if (result != null) {
                 fontList = result.Cast<FontInfo>().ToList();
             }
-
             return fontList;
         }
 
