@@ -225,5 +225,72 @@
 
             }            
         }
+
+        [TestClass]
+        public class ReadFontsFromJsonFileTests {
+            [TestMethod]
+            public void ReadFontsFromJsonFileTwoFonts() {
+                #region strings
+                string json = @"
+[
+  {
+    ""FamilyDisplayName"": ""Abel"",
+    ""Family"": ""abel"",
+    ""Fallback"": null,
+    ""AvailableFontVariations"": [
+      {
+        ""VariantName"": ""Regular"",
+        ""LicenseUri"": ""http://typekit.com/eulas/0000000000000000000121cc"",
+        ""Style"": 0,
+        ""Weight"": 4
+      }
+    ]
+  },
+  {
+    ""FamilyDisplayName"": ""Abril Fatface"",
+    ""Family"": ""abril-fatface"",
+    ""Fallback"": null,
+    ""AvailableFontVariations"": [
+      {
+        ""VariantName"": ""Regular"",
+        ""LicenseUri"": ""http://typekit.com/eulas/0000000000000000000119b2"",
+        ""Style"": 0,
+        ""Weight"": 4
+      },
+      {
+        ""VariantName"": ""Italic"",
+        ""LicenseUri"": ""http://typekit.com/eulas/0000000000000000000119b3"",
+        ""Style"": 1,
+        ""Weight"": 4
+      }
+    ]
+  }
+]";
+                #endregion
+
+                IList<IFontInfo> fontList = new FontInfoParser().ReadFontsFromJson(json);
+
+                Assert.IsNotNull(fontList);
+                Assert.AreEqual(2, fontList.Count);
+
+                Assert.AreEqual("Abel", fontList[0].FamilyDisplayName);
+                Assert.AreEqual("abel", fontList[0].Family);
+                Assert.AreEqual(1, fontList[0].AvailableFontVariations.Count);
+                Assert.AreEqual("Regular", fontList[0].AvailableFontVariations[0].VariantName);
+                Assert.AreEqual(FontStyleEnum.Normal, fontList[0].AvailableFontVariations[0].Style);
+                Assert.AreEqual(4, fontList[0].AvailableFontVariations[0].Weight);
+
+
+                Assert.AreEqual("Abril Fatface", fontList[1].FamilyDisplayName);
+                Assert.AreEqual("abril-fatface", fontList[1].Family);
+                Assert.AreEqual(2, fontList[1].AvailableFontVariations.Count);
+                Assert.AreEqual("Regular", fontList[1].AvailableFontVariations[0].VariantName);
+                Assert.AreEqual(FontStyleEnum.Normal, fontList[1].AvailableFontVariations[0].Style);
+                Assert.AreEqual(4, fontList[1].AvailableFontVariations[0].Weight);
+                Assert.AreEqual("Italic", fontList[1].AvailableFontVariations[1].VariantName);
+                Assert.AreEqual(FontStyleEnum.Italic, fontList[1].AvailableFontVariations[1].Style);
+                Assert.AreEqual(4, fontList[1].AvailableFontVariations[1].Weight);
+            }
+        }
     }
 }

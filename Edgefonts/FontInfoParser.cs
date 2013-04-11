@@ -9,7 +9,16 @@
     using Edgefonts.Extensions;
     using System.IO;
 
-    public class FontInfoParser {
+    public interface IFontInfoParser {
+        IFontInfo BuildFromHtmlTable(string htmlTable);
+        IFontInfo BuildFromHtmlTable(System.Xml.Linq.XElement element);
+        System.Collections.Generic.IList<IFontInfo> GenerateFromHtmlFile(string filePath);
+        System.Collections.Generic.IList<IFontInfo> GenerateFromHtmlTables(string html);
+        System.Collections.Generic.IList<IFontInfo> ReadFontsFromJson(string json);
+        System.Collections.Generic.IList<IFontInfo> ReadFontsFromJsonFile(string filePath);
+    }
+
+    public class FontInfoParser : Edgefonts.IFontInfoParser {
         public IList<IFontInfo> GenerateFromHtmlTables(string html) {
             XDocument doc = XDocument.Parse(html);
             IList<IFontInfo> fontInfoList = (from e in doc.Descendants("table")
@@ -22,6 +31,26 @@
             // these files are only ~250k
             string html = File.ReadAllText(filePath);
             return GenerateFromHtmlTables(html);
+        }
+
+        public IList<IFontInfo> ReadFontsFromJsonFile(string filePath) {
+            if (string.IsNullOrEmpty(filePath)) { throw new ArgumentNullException("filePath"); }
+
+            string jsonContent = File.ReadAllText(filePath);
+            return ReadFontsFromJson(jsonContent);
+        }
+
+        public IList<IFontInfo> ReadFontsFromJson(string json) {
+            if (string.IsNullOrEmpty(json)) { throw new ArgumentNullException("json"); }
+
+            IList<IFontInfo> fontList = null;
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<FontInfo>>(json);
+
+            if (result != null) {
+                fontList = result.Cast<IFontInfo>().ToList();
+            }
+
+            return fontList;
         }
 
         public IFontInfo BuildFromHtmlTable(string htmlTable) {

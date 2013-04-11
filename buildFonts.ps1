@@ -6,13 +6,11 @@
 
 function Write-InfoMessage
 {
-    param([string]$message)
-    if($message){
-        $message | Write-Host -ForegroundColor Cyan
-    }
+    param([string]$input)
+    $input | Write-Host -ForegroundColor Cyan
 }
 
-$downloadFile = $false
+$downloadFile = $true
 $fontsUrl = 'http://www.edgefonts.com/#list-of-available-fonts'
 
 $scriptDir = Get-ScriptDirectory
@@ -20,7 +18,7 @@ $edgeFontsAssemblyPath = Join-Path $scriptDir 'BuildOutput\Edgefonts.dll'
 $jsonNetAssemblyPath = Join-Path $scriptDir 'Lib\Newtonsoft.Json.dll'
 $htmlResultPath = Join-Path $scriptDir 'BuildOutput\fonts.html'
 $xmlResultPath = Join-Path $scriptDir 'BuildOutput\fonts.xml'
-$jsonResultPath = Join-Path $scriptDir 'BuildOutput\fonts.js'
+$jsonResultPath = Join-Path $scriptDir 'EdgefontsWeb\App_Data\fonts.js'
 
 
 if($downloadFile -and (Test-Path $htmlResultPath)){
@@ -29,7 +27,7 @@ if($downloadFile -and (Test-Path $htmlResultPath)){
 
 $webClient = New-Object System.Net.WebClient
 if($downloadFile){
-
+    "Downloading file from URL [{0}]" -f $fontsUrl | Write-InfoMessage
     $webClient.DownloadFile($fontsUrl,$htmlResultPath)
 }
 
@@ -82,7 +80,7 @@ Set-Content -Path $xmlResultPath -Value $lines
 
 
 
-[System.Reflection.Assembly]::LoadFile($edgeFontsAssemblyPath)
+[System.Reflection.Assembly]::LoadFile($edgeFontsAssemblyPath) | Out-Null
 
 $parser = New-Object EdgeFonts.FontInfoParser
 $fontInfoList = $parser.GenerateFromHtmlFile($xmlResultPath)
@@ -95,9 +93,11 @@ foreach($font in $fontInfoList){
 }
 
 "Serializing to json" | Write-InfoMessage
-# searlize it to Json and write the file out
-[System.Reflection.Assembly]::LoadFile($jsonNetAssemblyPath)
+# Serialize it to Json and write the file out
+
+[System.Reflection.Assembly]::LoadFile($jsonNetAssemblyPath) | Out-Null
 $fontsJson = [Newtonsoft.Json.JsonConvert]::SerializeObject($fontInfoList)
+
 if($fontsJson -eq $null -or $fontsJson.Length -le 0){
     "The font did not serialize to Json correctly. It is null or empty" | Write-Error
     exit 1

@@ -17,7 +17,7 @@
         public FontStyleEnum Style { get; set; }
         public int Weight { 
             get { return weight; }
-            internal set {
+            set {
                 // can be either 1,2,3,4,5,6,7,8,9 or 100,200,300,400,500,600,700,800,900
                 string pattern = "^[1-9]{1}(00)?$";
                 if (!Regex.IsMatch(value.ToString(), pattern)) {
