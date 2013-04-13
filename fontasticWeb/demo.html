@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>fontastic demo</title>
+    <script src="Scripts/jquery-1.9.1.js"></script>
+
+    <script src="http://use.edgefonts.net/abel.js"></script>
+    <style type="text/css">
+        #sampleText {
+            font-family: abel;
+            font-style: normal;
+            font-weight: 100;
+        }
+
+        input[type='text'] {
+            width:400px;
+        }
+    </style>
+
+
+
+
+</head>
+<body>
+    <h1>demo here</h1>
+    
+    <p>Font name
+    <input id="inputFont" type="text" value="abel" /></p>
+
+    <p id="sampleText">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vitae ultrices libero. Praesent auctor massa vel felis eleifend iaculis. Nam commodo odio vel nibh dictum blandit. Donec mauris eros, pharetra vitae adipiscing ac, viverra sit amet lacus. Proin malesuada tempus tellus, volutpat feugiat eros commodo ut. Nunc sagittis, orci non imperdiet porta, felis ipsum pellentesque lorem, sed egestas massa augue in nibh. Curabitur nec accumsan erat. Nullam auctor tristique tempor. Sed non sem in ipsum varius volutpat vitae eu ipsum. Sed eu magna orci, condimentum convallis felis. Vivamus luctus aliquet diam, at pharetra nisl viverra in. Donec lacinia urna eu sem feugiat pretium. Etiam at turpis non odio facilisis euismod et sed arcu. In non sem lectus, vitae bibendum lectus. Aliquam ac tortor vel magna laoreet adipiscing.
+    </p>
+
+    <!--var scriptUrl = '<script src="http://use.edgefonts.net/"' + fontName + ".js> </script>";-->
+
+    <!--<script>
+        var scriptUrl = '<script src="http://use.edgefonts.net/"' + fontName + '.js> </script>';
+    </script>-->
+
+    <script>
+        $(function () {
+            $('#inputFont').blur(function () {
+                var fontName = $("#inputFont").val().trim();
+
+                // here is the script tag that we need to add
+                var scriptTag = 'script'
+                var scriptUrl = '<' + scriptTag + ' src="//use.edgefonts.net/' + fontName + '.js"></' + scriptTag + '>';
+
+                $(scriptUrl).insertAfter("#placeholder");
+
+                $("#sampleText").css('font-family', fontName);
+            });
+        });
+    </script>
+    <div id="placeholder" />
+</body>
+</html>
