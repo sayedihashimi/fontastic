@@ -1,6 +1,6 @@
 ﻿namespace FontasticTests {
     using Fontastic;
-    using Edgefonts.Exceptions;
+    using FontasticWeb.Exceptions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;

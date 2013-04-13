@@ -1,4 +1,4 @@
-﻿namespace Edgefonts.Exceptions {
+﻿namespace FontasticWeb.Exceptions {
     using System;
 
     [Serializable]

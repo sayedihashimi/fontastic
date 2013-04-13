@@ -6,7 +6,7 @@
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
-    using Edgefonts.Extensions;
+    using FontasticWeb.Extensions;
     using System.IO;
 
     public interface IFontInfoParser {

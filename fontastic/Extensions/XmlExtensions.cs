@@ -1,4 +1,4 @@
-﻿namespace Edgefonts.Extensions {
+﻿namespace FontasticWeb.Extensions {
     using System;
     using System.Collections;
     using System.Collections.Generic;

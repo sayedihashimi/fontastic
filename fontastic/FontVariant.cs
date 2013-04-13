@@ -1,5 +1,5 @@
 ﻿namespace Fontastic {
-    using Edgefonts.Exceptions;
+    using FontasticWeb.Exceptions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
