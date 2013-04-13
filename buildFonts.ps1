@@ -15,11 +15,11 @@ $indentJson = $true
 $fontsUrl = 'http://www.edgefonts.com/#list-of-available-fonts'
 
 $scriptDir = Get-ScriptDirectory
-$edgeFontsAssemblyPath = Join-Path $scriptDir 'BuildOutput\Edgefonts.dll'
+$fontasticAssemblyPath = Join-Path $scriptDir 'BuildOutput\Fontastic.dll'
 $jsonNetAssemblyPath = Join-Path $scriptDir 'Lib\Newtonsoft.Json.dll'
 $htmlResultPath = Join-Path $scriptDir 'BuildOutput\fonts.html'
 $xmlResultPath = Join-Path $scriptDir 'BuildOutput\fonts.xml'
-$jsonResultPath = Join-Path $scriptDir 'EdgefontsWeb\App_Data\fonts.js'
+$jsonResultPath = Join-Path $scriptDir 'FontasticWeb\App_Data\fonts.js'
 
 
 if($downloadFile -and (Test-Path $htmlResultPath)){
@@ -81,9 +81,9 @@ Set-Content -Path $xmlResultPath -Value $lines
 
 
 
-[System.Reflection.Assembly]::LoadFile($edgeFontsAssemblyPath) | Out-Null
+[System.Reflection.Assembly]::LoadFile($fontasticAssemblyPath) | Out-Null
 
-$parser = New-Object EdgeFonts.FontInfoParser
+$parser = New-Object Fontastic.FontInfoParser
 $fontInfoList = $parser.GenerateFromHtmlFile($xmlResultPath)
 
 "Number of fonts found: [{0}]" -f $fontInfoList.Length
@@ -115,4 +115,4 @@ if($fontsJson -eq $null -or $fontsJson.Length -le 0){
 Set-Content -Value $fontsJson -Path $jsonResultPath
 
 "Script directory {0}" -f $scriptDir  | Write-InfoMessage
-"Assembly path {0}" -f $edgeFontsAssemblyPath  | Write-InfoMessage
+"Assembly path {0}" -f $fontasticAssemblyPath  | Write-InfoMessage

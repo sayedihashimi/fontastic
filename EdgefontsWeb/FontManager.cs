@@ -1,5 +1,5 @@
-﻿namespace EdgefontsWeb {
-    using Edgefonts;
+﻿namespace FontasticWeb {
+    using Fontastic;
     using System;
     using System.Collections.Generic;
     using System.IO;

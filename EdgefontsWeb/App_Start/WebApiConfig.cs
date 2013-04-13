@@ -1,4 +1,4 @@
-﻿using Edgefonts;
+﻿using Fontastic;
 using Microsoft.Data.Edm;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Web.Http;
 using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Formatter;
 
-namespace EdgefontsWeb {
+namespace FontasticWeb {
     public static class WebApiConfig {
         public static void Register(HttpConfiguration config) {
             config.Routes.MapHttpRoute(

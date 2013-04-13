@@ -1,5 +1,5 @@
-﻿namespace TestEdgefonts {
-    using Edgefonts;
+﻿namespace FontasticTests {
+    using Fontastic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;

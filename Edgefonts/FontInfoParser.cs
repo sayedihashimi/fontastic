@@ -1,4 +1,4 @@
-﻿namespace Edgefonts {
+﻿namespace Fontastic {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,10 +18,9 @@
         System.Collections.Generic.IList<FontInfo> ReadFontsFromJsonFile(string filePath);
     }
 
-    public class FontInfoParser : Edgefonts.IFontInfoParser {
+    public class FontInfoParser : IFontInfoParser {
         public IList<FontInfo> GenerateFromHtmlTables(string html) {
             XDocument doc = XDocument.Parse(html);
-            long id=0;
             IList<FontInfo> fontInfoList = (from e in doc.Descendants("table")
                                              select this.BuildFromHtmlTable(e)).ToList();
 

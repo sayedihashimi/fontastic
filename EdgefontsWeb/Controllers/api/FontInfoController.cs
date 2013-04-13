@@ -1,5 +1,5 @@
-﻿namespace EdgefontsWeb.Controllers.api {
-    using Edgefonts;
+﻿namespace FontasticWeb.Controllers.api {
+    using Fontastic;
     using System;
     using System.Collections.Generic;
     using System.Linq;

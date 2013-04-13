@@ -1,4 +1,4 @@
-﻿namespace Edgefonts {
+﻿namespace Fontastic {
     using Edgefonts.Exceptions;
     using System;
     using System.Collections.Generic;
