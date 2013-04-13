@@ -188,7 +188,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Edgefonts\Fontastic.csproj">
+    <ProjectReference Include="..\fontastic\Fontastic.csproj">
       <Project>{1caf9f69-f8a6-4801-89b0-a054dae57a8e}</Project>
       <Name>Fontastic</Name>
     </ProjectReference>

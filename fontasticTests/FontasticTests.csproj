@@ -63,7 +63,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Edgefonts\Fontastic.csproj">
+    <ProjectReference Include="..\fontasticWeb\FontasticWeb.csproj">
+      <Project>{930629c4-b59b-46c0-a7ba-1fb4a0caae66}</Project>
+      <Name>FontasticWeb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\fontastic\Fontastic.csproj">
       <Project>{1caf9f69-f8a6-4801-89b0-a054dae57a8e}</Project>
       <Name>Fontastic</Name>
     </ProjectReference>
