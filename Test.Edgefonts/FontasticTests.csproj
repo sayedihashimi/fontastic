@@ -63,9 +63,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Edgefonts\Edgefonts.csproj">
+    <ProjectReference Include="..\Edgefonts\Fontastic.csproj">
       <Project>{1caf9f69-f8a6-4801-89b0-a054dae57a8e}</Project>
-      <Name>Edgefonts</Name>
+      <Name>Fontastic</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

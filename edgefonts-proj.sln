@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edgefonts", "Edgefonts\Edgefonts.csproj", "{1CAF9F69-F8A6-4801-89B0-A054DAE57A8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fontastic", "Edgefonts\Fontastic.csproj", "{1CAF9F69-F8A6-4801-89B0-A054DAE57A8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Edgefonts", "Test.Edgefonts\Test.Edgefonts.csproj", "{A7FE33E4-A737-4FBE-85AF-20B5505F58AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontasticTests", "Test.Edgefonts\FontasticTests.csproj", "{A7FE33E4-A737-4FBE-85AF-20B5505F58AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgefontsWeb", "EdgefontsWeb\EdgefontsWeb.csproj", "{930629C4-B59B-46C0-A7BA-1FB4A0CAAE66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontasticWeb", "EdgefontsWeb\FontasticWeb.csproj", "{930629C4-B59B-46C0-A7BA-1FB4A0CAAE66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SlnFiles", "SlnFiles", "{A7A44262-F4E1-4972-BEC6-7648512A1C65}"
 	ProjectSection(SolutionItems) = preProject
