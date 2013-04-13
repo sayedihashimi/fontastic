@@ -1,26 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "website", "website\", "{CAE40066-D07A-460D-B80A-7772806E6E3A}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/website"
-		Debug.AspNetCompiler.PhysicalPath = "website\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\website\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/website"
-		Release.AspNetCompiler.PhysicalPath = "website\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\website\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "18090"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edgefonts", "Edgefonts\Edgefonts.csproj", "{1CAF9F69-F8A6-4801-89B0-A054DAE57A8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Edgefonts", "Test.Edgefonts\Test.Edgefonts.csproj", "{A7FE33E4-A737-4FBE-85AF-20B5505F58AF}"
@@ -38,10 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CAE40066-D07A-460D-B80A-7772806E6E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAE40066-D07A-460D-B80A-7772806E6E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAE40066-D07A-460D-B80A-7772806E6E3A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAE40066-D07A-460D-B80A-7772806E6E3A}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{1CAF9F69-F8A6-4801-89B0-A054DAE57A8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1CAF9F69-F8A6-4801-89B0-A054DAE57A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CAF9F69-F8A6-4801-89B0-A054DAE57A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
