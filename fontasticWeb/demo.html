@@ -2,8 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>fontastic demo</title>
+    
     <script src="Scripts/URI.js"></script>
-    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/jquery-1.4.4.min.js"></script>
+    
+    <script src="Scripts/jquery.ui.core.min.js"></script>
+    <script src="Scripts/jquery.ui.position.min.js"></script>
+    <script src="Scripts/jquery.ui.widget.min.js"></script>
+    <script src="Scripts/jquery.ui.autocomplete.min.js"></script>
+    <link href="Content/jquery-ui.css" rel="stylesheet" />
 
     <script src="http://use.edgefonts.net/abel.js"></script>
     <style type="text/css">
@@ -19,10 +26,9 @@
             font-style: normal;
             font-weight: 100;
         }
-
         input[type='text'] {
             width:400px;
-        }
+        }        
     </style>
 </head>
 <body>
@@ -39,7 +45,10 @@
 
     <ul>
         <li class="fieldName">Font name</li>
-        <li><input id="inputFont" type="text" value="abel" /></li>
+        <li>
+            <input id="inputFont" type="text" value="abel" />
+            <span id="searchButton"></span>
+        </li>
         
         <li class="fieldName">Weight</li>
         <li>
@@ -88,6 +97,13 @@
                     $('#inputStyle').val(fontObj.style);
                 }
             }
+            
+            $.ajax({
+                url: '/o/FontSummary',
+                success: function (result) {
+                    setAvailableFontNames(result);
+                }
+            });
 
             $('#inputFont').blur(function () {
                 updateFontFromUi();                
@@ -97,6 +113,22 @@
             });
             $('#inputStyle').change(function () {
                 updateFontFromUi();
+            });
+
+            $('#inputFont').bind('change keydown keyup',function () {
+                var filterText = $("#inputFont").val();
+                var queryUrl = "/o/FontSummary?$filter=startswith(Family,'" + filterText + "')%20eq%20true";
+
+                if (filterText.length <= 0) {
+                    queryUrl = "/o/FontSummary";
+                }
+
+                $.ajax({
+                    url: queryUrl,
+                    success: function (result) {
+                        setAvailableFontNames(result);
+                    }
+                });
             });
 
             function updateFont(fontObj) {
@@ -123,6 +155,16 @@
                 fontObj.weight = $("#inputWeight").val().trim();
                 fontObj.style = $("#inputStyle").val().trim();
                 updateFont(fontObj);
+            }
+
+            function setAvailableFontNames(data) {
+                var familyNames = new Array();
+                for (var i = 0; i < data.length; i++) {
+                    familyNames[i] = data[i].Family;
+                }
+                $("#inputFont").autocomplete({
+                    source: familyNames
+                });
             }
         });
     </script>

@@ -12,6 +12,12 @@
 
     public class FontSummaryController : EntitySetController<FontSummary,string>
     {
+        /// <summary>
+        /// This returns the font name and display name.
+        /// You can use OData to query this. Examples:
+        /// - How to get fonts that start with 'ab'
+        ///     http://localhost:29284/o/FontSummary?$filter=startswith(Family,'ab')%20eq%20true
+        /// </summary>
         [Queryable(PageSize=50,AllowedQueryOptions=AllowedQueryOptions.All)]
         public override IQueryable<FontSummary> Get() {
             var result = (from f in this.NewFontManager().GetFonts()
