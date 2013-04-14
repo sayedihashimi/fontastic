@@ -4,7 +4,7 @@
     <SourceRoot Condition=" '$(SourceRoot)'=='' ">$(MSBuildProjectDirectory)\</SourceRoot>
     <OutputRootNoTrailingSlash Condition=" '$(OutputRoot)'=='' ">$(SourceRoot)BuildOutput</OutputRootNoTrailingSlash>
     <OutputRoot Condition=" '$(OutputRoot)'=='' ">$(OutputRootNoTrailingSlash)\</OutputRoot>
-    <CreateFontsOnBuild Condition=" '$(CreateFontsOnBuild)'=='' ">false</CreateFontsOnBuild>
+    <CreateFontsOnBuild Condition=" '$(CreateFontsOnBuild)'=='' ">true</CreateFontsOnBuild>
     <CreateFontsPsScript Condition=" '$(CreateFontsPsScript)'=='' ">$(MSBuildThisFileDirectory)buildFonts.ps1</CreateFontsPsScript>
   </PropertyGroup>
   
@@ -90,7 +90,7 @@
 
     <PropertyGroup>
       
-      <_PsCmd>powershell.exe -command &quot;&amp; {</_PsCmd>
+      <_PsCmd>powershell.exe -ExecutionPolicy RemoteSigned  -command &quot;&amp; {</_PsCmd>
       <_PsCmd>$(_PsCmd) $(CreateFontsPsScript)}&quot;</_PsCmd>      
     </PropertyGroup>
 

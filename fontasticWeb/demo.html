@@ -2,10 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>fontastic demo</title>
+    <script src="Scripts/URI.js"></script>
     <script src="Scripts/jquery-1.9.1.js"></script>
 
     <script src="http://use.edgefonts.net/abel.js"></script>
     <style type="text/css">
+        .fieldName {
+            font-weight:bold;
+            padding-top:10px;
+        }
+        ul {
+            list-style:none;
+        }
         #sampleText {
             font-family: abel;
             font-style: normal;
@@ -16,40 +24,106 @@
             width:400px;
         }
     </style>
-
-
-
-
 </head>
 <body>
-    <h1>demo here</h1>
+    <h1>Font demo</h1>
     
-    <p>Font name
-    <input id="inputFont" type="text" value="abel" /></p>
+    <p>You can use this page in the following ways</p>
+    <ul>
+        <li>/demo.html</li>
+        <li>/demo.html?family=abel</li>
+        <li>/demo.html?family=yesteryear&weight=900&style=italic</li>
+        <li>/demo.html?family=tienne&weight=400&style=italic</li>
+    </ul>
+    <hr />
 
+    <ul>
+        <li class="fieldName">Font name</li>
+        <li><input id="inputFont" type="text" value="abel" /></li>
+        
+        <li class="fieldName">Weight</li>
+        <li>
+            <select id="inputWeight">
+                <option selected="selected">100</option>
+                <option>200</option><option>300</option><option>400</option><option>500</option>
+                <option>600</option><option>700</option><option>800</option><option>900</option>
+            </select>
+        </li>
+        
+        <li class="fieldName">Style</li>
+        <li>
+            <select id="inputStyle">
+                <option selected="selected">normal</option>
+                <option>italic</option>                
+            </select>
+        </li>
+    </ul>
+    
     <p id="sampleText">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vitae ultrices libero. Praesent auctor massa vel felis eleifend iaculis. Nam commodo odio vel nibh dictum blandit. Donec mauris eros, pharetra vitae adipiscing ac, viverra sit amet lacus. Proin malesuada tempus tellus, volutpat feugiat eros commodo ut. Nunc sagittis, orci non imperdiet porta, felis ipsum pellentesque lorem, sed egestas massa augue in nibh. Curabitur nec accumsan erat. Nullam auctor tristique tempor. Sed non sem in ipsum varius volutpat vitae eu ipsum. Sed eu magna orci, condimentum convallis felis. Vivamus luctus aliquet diam, at pharetra nisl viverra in. Donec lacinia urna eu sem feugiat pretium. Etiam at turpis non odio facilisis euismod et sed arcu. In non sem lectus, vitae bibendum lectus. Aliquam ac tortor vel magna laoreet adipiscing.
     </p>
 
-    <!--var scriptUrl = '<script src="http://use.edgefonts.net/"' + fontName + ".js> </script>";-->
-
-    <!--<script>
-        var scriptUrl = '<script src="http://use.edgefonts.net/"' + fontName + '.js> </script>';
-    </script>-->
-
     <script>
         $(function () {
+            // see if there is a font name in the query string
+            var $uri = new URI(window.location.href);
+            var queryParams = $uri.query(true);
+            var family = queryParams.family;
+
+            var fontObj = new Object();
+            fontObj.family = queryParams.family;
+            fontObj.weight = queryParams.weight;
+            fontObj.style = queryParams.style;
+
+            if (fontObj) {
+                updateFont(fontObj);
+                if (fontObj.family) {
+                    // update the text in the font name drop down before the event is attached
+                    $('#inputFont').val(fontObj.family);
+                }
+                if (fontObj.weight) {
+                    $('#inputWeight').val(fontObj.weight);
+                }
+                if (fontObj.style) {
+                    $('#inputStyle').val(fontObj.style);
+                }
+            }
+
             $('#inputFont').blur(function () {
-                var fontName = $("#inputFont").val().trim();
-
-                // here is the script tag that we need to add
-                var scriptTag = 'script'
-                var scriptUrl = '<' + scriptTag + ' src="//use.edgefonts.net/' + fontName + '.js"></' + scriptTag + '>';
-
-                $(scriptUrl).insertAfter("#placeholder");
-
-                $("#sampleText").css('font-family', fontName);
+                updateFontFromUi();                
             });
+            $('#inputWeight').change(function () {
+                updateFontFromUi();
+            });
+            $('#inputStyle').change(function () {
+                updateFontFromUi();
+            });
+
+            function updateFont(fontObj) {
+                // here is the script tag that we need to add
+                if (fontObj.family) {
+                    var scriptTag = 'script'
+                    var scriptUrl = '<' + scriptTag + ' src="//use.edgefonts.net/' + fontObj.family + '.js"></' + scriptTag + '>';
+                    $(scriptUrl).insertAfter("#placeholder");
+
+                    $("#sampleText").css('font-family', fontObj.family);
+                }
+
+                if (fontObj.weight) {
+                    $("#sampleText").css('font-weight', fontObj.weight);
+                }
+                if (fontObj.style) {
+                    $("#sampleText").css('font-style', fontObj.style);
+                }
+            }
+
+            function updateFontFromUi() {
+                var fontObj = new Object();
+                fontObj.family = $("#inputFont").val().trim();
+                fontObj.weight = $("#inputWeight").val().trim();
+                fontObj.style = $("#inputStyle").val().trim();
+                updateFont(fontObj);
+            }
         });
     </script>
     <div id="placeholder" />

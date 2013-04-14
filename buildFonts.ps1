@@ -93,7 +93,7 @@ $fontId=0
 foreach($font in $fontInfoList){
     # update the ID values for each font
     $font.Id = $fontId++
-    "{0} | {1} | {2}" -f $font.FamilyDisplayName, $font.Family,$font.AvailableFontVariations.length | Write-Host -ForegroundColor DarkCyan
+    # "{0} | {1} | {2}" -f $font.FamilyDisplayName, $font.Family,$font.AvailableFontVariations.length | Write-Host -ForegroundColor DarkCyan
 }
 
 "Serializing to json" | Write-InfoMessage
