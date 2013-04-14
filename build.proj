@@ -1,0 +1,101 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="FullBuild">
+
+  <PropertyGroup>
+    <SourceRoot Condition=" '$(SourceRoot)'=='' ">$(MSBuildProjectDirectory)\</SourceRoot>
+    <OutputRootNoTrailingSlash Condition=" '$(OutputRoot)'=='' ">$(SourceRoot)BuildOutput</OutputRootNoTrailingSlash>
+    <OutputRoot Condition=" '$(OutputRoot)'=='' ">$(OutputRootNoTrailingSlash)\</OutputRoot>
+    <CreateFontsOnBuild Condition=" '$(CreateFontsOnBuild)'=='' ">false</CreateFontsOnBuild>
+    <CreateFontsPsScript Condition=" '$(CreateFontsPsScript)'=='' ">$(MSBuildThisFileDirectory)buildFonts.ps1</CreateFontsPsScript>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectsToBuild Include="$(SourceRoot)fontastic.sln"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)'=='' ">Release</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <FullBuildDependsOn>
+      $(FullBuildDependsOn);
+      Build;
+    </FullBuildDependsOn>
+    <FullBuildDependsOn Condition=" '$(CreateFontsOnBuild)'=='true' ">
+      $(FullBuildDependsOn);
+      CreateFonts;
+    </FullBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="FullBuild" DependsOnTargets="$(FullBuildDependsOn)"/>
+
+  <PropertyGroup>
+    <RebuildDependsOn>
+      $(RebuildDependsOn);
+      Clean;
+      FullBuild;
+    </RebuildDependsOn>
+  </PropertyGroup>
+  <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)"/>
+ 
+  <!-- ***************************************************************************************
+ Begin build targets
+ *************************************************************************************** -->
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      PrepareForBuild;
+      CoreBuild      
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)"/>
+  <Target Name="CoreBuild">
+    <MSBuild Projects="@(ProjectsToBuild)"
+             Properties="Configuration=$(Configuration);OutputPath=$(OutputRoot)" />
+  </Target>
+
+  <Target Name="PrepareForBuild">
+    <MakeDir Directories="$(OutputRoot)"/>
+  </Target>
+
+  <PropertyGroup>
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      CoreClean;
+    </CleanDependsOn>
+  </PropertyGroup>
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)"/>
+  <Target Name="CoreClean">
+    <!-- Just delete the BuildOutput folder -->
+    <ItemGroup>
+      <_FilesToDelete Remove="@(_FilesToDelete)"/>
+      <_FilesToDelete Include="$(OutputRoot)**\*"/>
+    </ItemGroup>
+    <Delete Files="@(_FilesToDelete)"/>
+  </Target>
+
+  <!-- ***************************************************************************************
+ Create the fonts from the web
+ *************************************************************************************** -->
+  <PropertyGroup>
+    <CreateFontsDependsOn>
+      CoreCreateFonts;  
+    </CreateFontsDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CreateFonts" DependsOnTargets="$(CreateFontsDependsOn)" />
+
+  <Target Name="CoreCreateFonts">
+    <!--<Exec Command="powershell.exe -command &quot;&amp; {.\Register-EmailApiSnapIn.ps1}&quot;" />-->
+
+    <PropertyGroup>
+      
+      <_PsCmd>powershell.exe -command &quot;&amp; {</_PsCmd>
+      <_PsCmd>$(_PsCmd) $(CreateFontsPsScript)}&quot;</_PsCmd>      
+    </PropertyGroup>
+
+    <Message Text="Creating font.js file using powershell script at [$(CreateFontsPsScript)]"/>
+    <Message Text="Powershell command: [$(_PsCmd)]"/>
+    <Exec Command="$(_PsCmd)"/>
+  </Target>
+</Project>
