@@ -162,8 +162,13 @@
                 for (var i = 0; i < data.length; i++) {
                     familyNames[i] = data[i].Family;
                 }
+
                 $("#inputFont").autocomplete({
                     source: familyNames
+                });
+
+                $("#inputFont").bind("autocompleteselect", function (event, ui) {
+                    $('#inputFont').blur();
                 });
             }
         });
