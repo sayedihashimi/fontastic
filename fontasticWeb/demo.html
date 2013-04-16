@@ -83,6 +83,7 @@
             fontObj.family = queryParams.family;
             fontObj.weight = queryParams.weight;
             fontObj.style = queryParams.style;
+            fontObj.size = queryParams.size;
 
             if (fontObj) {
                 updateFont(fontObj);
@@ -138,14 +139,17 @@
                     var scriptUrl = '<' + scriptTag + ' src="//use.edgefonts.net/' + fontObj.family + '.js"></' + scriptTag + '>';
                     $(scriptUrl).insertAfter("#placeholder");
 
-                    $("#sampleText").css('font-family', fontObj.family);
+                    document.getElementById('sampleText').style.fontFamily = fontObj.family;
                 }
 
                 if (fontObj.weight) {
-                    $("#sampleText").css('font-weight', fontObj.weight);
+                    document.getElementById('sampleText').style.fontWeight = fontObj.weight;
                 }
                 if (fontObj.style) {
-                    $("#sampleText").css('font-style', fontObj.style);
+                    document.getElementById('sampleText').style.fontStyle = fontObj.style;
+                }
+                if (fontObj.size) {
+                    document.getElementById('sampleText').style.fontSize = fontObj.size;
                 }
             }
 
