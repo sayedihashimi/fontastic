@@ -197,6 +197,7 @@
     <Content Include="images\1365993493_find.png" />
     <Content Include="index.html" />
     <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="preview.html" />
     <Content Include="Scripts\jquery-1.4.4.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
     <Content Include="Scripts\jquery.ui.autocomplete.js" />

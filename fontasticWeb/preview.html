@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>fontastic demo</title>
+    
+    <script src="Scripts/URI.js"></script>
+    <script src="Scripts/jquery-1.4.4.min.js"></script>
+        
+    <style type="text/css">
+        * {
+            margin:0;
+            padding:0;
+        }
+        #sampleText {
+            font-family: abel;
+            font-style: normal;
+            font-weight: 100;
+        }
+    </style>
+</head>
+<body><p id="sampleText">Lorem ipsum dolor sit amet</p>
+
+    <script>
+        $(function () {
+            // see if there is a font name in the query string
+            var $uri = new URI(window.location.href);
+            var queryParams = $uri.query(true);
+            var family = queryParams.family;
+
+            var fontObj = new Object();
+            fontObj.family = queryParams.family;
+            fontObj.weight = queryParams.weight;
+            fontObj.style = queryParams.style;
+
+            if (fontObj) {
+                updateFont(fontObj);
+            }
+            
+            function updateFont(fontObj) {
+                // here is the script tag that we need to add
+                if (fontObj.family) {
+                    var scriptTag = 'script'
+                    var scriptUrl = '<' + scriptTag + ' src="//use.edgefonts.net/' + fontObj.family + '.js"></' + scriptTag + '>';
+                    $(scriptUrl).insertAfter("#placeholder");
+
+                    $("#sampleText").css('font-family', fontObj.family);
+                }
+            }
+        });
+    </script>
+    <script src="http://use.edgefonts.net/abel.js"></script>
+    <div id="placeholder" />
+</body>
+</html>
